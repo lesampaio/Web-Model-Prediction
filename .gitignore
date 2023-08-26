@@ -1,5 +1,6 @@
-/venv
-model_venv/
+# VS Code
+.vscode/
 
 # Python
 __pycache__/
+/venv
