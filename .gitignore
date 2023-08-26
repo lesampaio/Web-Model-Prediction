@@ -1,4 +1,5 @@
 /venv
+model_venv/
 
 # Python
 __pycache__/
