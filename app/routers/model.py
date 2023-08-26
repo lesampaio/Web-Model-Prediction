@@ -1,5 +1,9 @@
 # Routers dedicated to model operations
 from fastapi import APIRouter
+# Xgboost model
+from ml_model.xgboost import xgb_regressor
+# Schemas
+from schemas.model import ModelInputFeatures
 
 router = APIRouter(
     prefix="/model",
@@ -7,29 +11,19 @@ router = APIRouter(
     responses={404: {"description": "Endpoint not found."}}
 )
 
-@router.post("/read_features")
-async def read_features(features):
-    """
-    Receives dictionary containing features that will serve as model input.
-
-    Args:
-        features: Dictionary with input features.
-    """
-    return {"status": "ok", "message": "Features received successfully!"}
-
 @router.get("/output")
-async def return_output(model_output):
+async def return_output(features):
     """
-    Returns model output.
+    Loads model and returns model prediction output.
 
     Args:
-        features: Dictionary with input features.
+        features: List with model input features.
+        [bank, week, day, arrival_time, time_spent, exit_time, people_in_queue]
     """
-    return {"status": "ok", "message": "Model output."}
+    # Validate features
+    ModelInputFeatures(features)
 
-@router.get("/metric_result")
-async def return_output(metric):
-    """
-    Returns model metric result.
-    """
-    return {"status": "ok","message": "Model metric result."}
+    # Make model prediction and return message
+    output_message = xgb_regressor(features)
+
+    return output_message
