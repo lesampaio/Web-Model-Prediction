@@ -3,7 +3,7 @@ Web application that receives user data and predicts their waiting time in the b
 
 - app: FastAPI Web app that receives user data and predicts their waiting time in the bank queue.
 - dockerfile: Dockerfile to run FastAPI app.
-- model: XGBoost Regressor model that predicts user queue waiting time in the bank queue. The machine learning model code can be found in the [Data Science Projects](https://github.com/lesampaio/Data-Science-Projects) repository.
+- machine learning model: XGBoost Regressor model that predicts user queue waiting time in the bank queue. The machine learning model code can be found in the [Data Science Projects](https://github.com/lesampaio/Data-Science-Projects) repository.
 
 ## FastAPI
 
@@ -13,22 +13,22 @@ Web application that receives user data and predicts their waiting time in the b
 
 ### API Directory Structure
 
-        ├── app                         <- "app" is a Python package
-        │   ├── __init__.py             <- this file makes "app" a "Python package"
+        ├── app                         
+        │   ├── __init__.py             <- This file makes "app" a "Python package"
         │   ├── main.py                 <- "main" module, e.g. import app.main
-        │   ├── dependencies.py         <- "dependencies" module, e.g. import app.dependencies
         │   └── routers                 <- "routers" is a "Python subpackage"
-        │   │   ├── __init__.py         <- makes "routers" a "Python subpackage"
-        │   │   └── users.py            <- "users" submodule, e.g. import app.routers.users
+        │   │   ├── __init__.py        
+        │   │   └── ml_model.py         <- Machine learning route
         │   │   
-        │   └── ml_model                <- "routers" is a "Python subpackage"
-        │   │   ├── __init__.py         <- makes "ml_model" a "Python subpackage"
-        │   │   ├── xgboost.py          <- Runs the model
+        │   └── config                  <- Database sessions
+        │   │           
+        │   └── xgboost_model           <- ML model packages
+        │   │   ├── __init__.py    
+        │   │   ├── xgboost.py          <- Implemented trained model
         │   │   └── xgboost_model.pkl   <- Trained and serialized model
-        │   │   
-        │   └── internal                <- "internal" is a "Python subpackage"
-        │   │   ├── __init__.py         <- makes "internal" a "Python subpackage"
-        │   │   └── admin.py            <- "admin" submodule, e.g. import app.internal.admin
+        │   │
+        │   └── models                  <- SQLAlchemy (Database) models
+        │   │   └── __init__.py         
         │   │
         │   └── schemas                 <- Schemas for data validation
         │   │   └──__init__.py  

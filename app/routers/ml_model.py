@@ -1,7 +1,7 @@
 # Routers dedicated to model operations
 from fastapi import APIRouter
 # Xgboost model
-from ml_model.xgboost import xgb_regressor
+from xgboost_model.xgboost import xgb_regressor
 # Schemas
 from schemas.model import ModelInputFeatures
 
@@ -11,18 +11,30 @@ router = APIRouter(
     responses={404: {"description": "Endpoint not found."}}
 )
 
+@router.post("/send_features")
+async def send_features(features: ModelInputFeatures):
+    """
+    Send feature data to be model input. Validate data with Data Model pydantic.
+
+    Args:
+        features: Dict with model input features.
+        [bank, week, day, arrival_time, time_spent, exit_time, people_in_queue]
+    """
+
+    return features
+
 @router.get("/output")
 async def return_output(features):
     """
-    Loads model and returns model prediction output.
+    Returns model prediction output.
 
     Args:
         features: List with model input features.
         [bank, week, day, arrival_time, time_spent, exit_time, people_in_queue]
-    """
-    # Validate features
-    ModelInputFeatures(features)
 
+    Return:
+        Model prediction output.
+    """
     # Make model prediction and return message
     output_message = xgb_regressor(features)
 
