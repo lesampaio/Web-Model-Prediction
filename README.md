@@ -7,16 +7,14 @@ Web application that receives user data and predicts their waiting time in the b
 
 ## FastAPI
 
-**How to Run API:**
-
-`uvicorn main:app --reload`
-
 ### API Directory Structure
 
         ├── app                         
+        │   ├── Dockerfile
+        │   ├── requirements.txt
         │   ├── __init__.py             <- This file makes "app" a "Python package"
-        │   ├── main.py                 <- "main" module, e.g. import app.main
-        │   └── routers                 <- "routers" is a "Python subpackage"
+        │   ├── main.py                 <- Defines FastAPI app
+        │   └── routers                 
         │   │   ├── __init__.py        
         │   │   └── ml_model.py         <- Machine learning route
         │   │   
@@ -35,3 +33,14 @@ Web application that receives user data and predicts their waiting time in the b
         │   │   
         │   └── tests                   <- Tests folder
         │       └── __init__.py  
+
+## Docker
+**Inside /app/ directory, run:**
+
+**Build docker image**
+
+`docker build -t fastapi-app .`
+
+**Run a container**
+
+`docker run -d -p 8000:8000 fastapi-app`
