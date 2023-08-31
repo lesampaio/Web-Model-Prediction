@@ -1,9 +1,11 @@
+import logging
 # Routers dedicated to model operations
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 # Xgboost model
 from xgboost_model.xgboost import xgb_regressor
 # Schemas
 from schemas.model import ModelInputFeatures
+from pydantic import ValidationError
 
 router = APIRouter(
     prefix="/model",
@@ -11,20 +13,30 @@ router = APIRouter(
     responses={404: {"description": "Endpoint not found."}}
 )
 
-@router.post("/send_features")
-async def send_features(features: ModelInputFeatures):
+@router.post("/send-features")
+def send_features(features: ModelInputFeatures):
     """
     Send feature data to be model input. Validate data with Data Model pydantic.
 
     Args:
-        features: Dict with model input features.
-        [bank, week, day, arrival_time, time_spent, exit_time, people_in_queue]
+        features: ModelInputFeatures instance.
     """
 
-    return features
+    try:
+        logging.debug("Initializing features validation.")
+        # "features" is already a validated instance of ModelInputFeatures
+        features
+
+        # TODO: Connect to database
+        # TODO: Insert data into database
+
+        return {"message": "Features validated."}
+    
+    except ValidationError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/output")
-async def return_output(features):
+def return_output(features):
     """
     Returns model prediction output.
 
@@ -35,7 +47,9 @@ async def return_output(features):
     Return:
         Model prediction output.
     """
-    # Make model prediction and return message
-    output_message = xgb_regressor(features)
+    # TODO: Get features from Database
 
-    return output_message
+    # Make model prediction and return message
+    output = xgb_regressor(features)
+
+    return {"message": output}
